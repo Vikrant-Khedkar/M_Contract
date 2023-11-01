@@ -8,7 +8,7 @@ contract PatientRecords {
         string gender;
         string insuranceId;
         Record[] records;
-        // mapping(uint256 => TestReport[]) recordTestReports;
+        mapping(uint256 => TestReport[]) recordTestReports;
     }
 
     struct Record {
@@ -17,16 +17,17 @@ contract PatientRecords {
         string diagnosis;
         string prescription;
         // string[] testsAdvised;
+        TestReport test;
         uint256 fees;
         uint256 followUp;
         uint256 bloodPressure;
         uint256 weight;
     }
 
-    // struct TestReport {
-    //     string testName;
-    //     string ipfsCID;
-    // }
+    struct TestReport {
+        string testName;
+        string ipfsCID;
+    }
 
     mapping(address => Patient) public patients;
 
@@ -53,6 +54,8 @@ contract PatientRecords {
         // string[] memory _testsAdvised,
         // string[] memory _testNames,
         // string[] memory _ipfsCIDs,
+        string memory testname,
+        string memory ipfsid,
         uint256 _fees,
         uint256 _followUp,
         uint256 _bloodPressure,
@@ -60,10 +63,13 @@ contract PatientRecords {
     ) public {
         Patient storage patient = patients[msg.sender];
         Record memory record;
+        // TestReport memory testreport;
         record.age = _age;
         record.dateOfVisit = _dateOfVisit;
         record.diagnosis = _diagnosis;
         record.prescription = _prescription;
+        record.test.testName = testname;
+        record.test.ipfsCID = ipfsid;
         // record.testsAdvised = _testsAdvised;
         record.fees = _fees;
         record.followUp = _followUp;
