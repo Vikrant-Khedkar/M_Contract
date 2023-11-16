@@ -1,4 +1,5 @@
 pragma solidity ^0.5.16;
+pragma experimental ABIEncoderV2;
 
 contract PatientRecords {
     struct Patient {
@@ -47,7 +48,7 @@ contract PatientRecords {
         string memory _file,
         uint256 _created_at
     ) public {
-        // Patient storage patient = patients[msg.sender];
+    
     records.push(Record({
             id: _id,
             user_address: msg.sender,
@@ -57,6 +58,28 @@ contract PatientRecords {
             file: _file,
             created_at: _created_at
     }));
+    }
+function getCount() public view returns(uint count) {
+    return records.length;
+}
+    function getAllRecordsForAddress(address user_address) public view returns (Record[] memory) {
+        uint i;
+        uint count = 0;
+        for (i = 0; i < getCount(); i++) {
+            if (records[i].user_address == user_address) {
+                count++;
+            }
+        }
+
+        Record[] memory userRecords = new Record[](count);
+        count = 0;
+        for (i = 0; i < getCount(); i++) {
+            if (records[i].user_address == user_address) {
+                userRecords[count] = records[i];
+                count++;
+            }
+        }
+        return userRecords;
     }
     
     
