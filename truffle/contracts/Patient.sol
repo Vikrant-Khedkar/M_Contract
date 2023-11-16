@@ -2,94 +2,62 @@ pragma solidity ^0.5.16;
 
 contract PatientRecords {
     struct Patient {
+        address account_address;
+        string username;
         string name;
-        uint256 dateOfBirth;
-        uint256 aadharNo;
         string gender;
-        string insuranceId;
-        Record[] records;
-        mapping(uint256 => TestReport[]) recordTestReports;
+        uint256 dateOfBirth;
+        uint256 created_at;
+    }
+    Patient[] public patients;
+
+    function addPatient(
+        address _account_address,
+        string memory _username,
+        string memory _name,
+        string memory _gender,
+        uint256 _dateOfBirth,
+        uint256 _created_at
+    ) public {
+        patients.push(Patient({ account_address : _account_address,
+        name : _name,
+        username : _username,
+        gender : _gender,
+        dateOfBirth : _dateOfBirth,
+        created_at : _created_at}));
+        
     }
 
     struct Record {
-        uint256 age;
-        uint256 dateOfVisit;
-        string diagnosis;
-        string prescription;
-        // string[] testsAdvised;
-        TestReport test;
-        uint256 fees;
-        uint256 followUp;
-        uint256 bloodPressure;
-        uint256 weight;
-    }
-
-    struct TestReport {
-        string testName;
-        string ipfsCID;
-    }
-
-    mapping(address => Patient) public patients;
-
-    function addPatient(
-        string memory _name,
-        uint256 _dateOfBirth,
-        uint256 _aadharNo,
-        string memory _gender,
-        string memory _insuranceId
-    ) public {
-        Patient storage patient = patients[msg.sender];
-        patient.name = _name;
-        patient.dateOfBirth = _dateOfBirth;
-        patient.aadharNo = _aadharNo;
-        patient.gender = _gender;
-        patient.insuranceId = _insuranceId;
-    }
-
+        uint256 id;
+        address user_address;
+        string title;
+        uint256 date;
+        string filename;
+        string file;
+        uint256 created_at;
+    } 
+    Record[] public records;
+    
     function addRecord(
-        uint256 _age,
-        uint256 _dateOfVisit,
-        string memory _diagnosis,
-        string memory _prescription,
-        // string[] memory _testsAdvised,
-        // string[] memory _testNames,
-        // string[] memory _ipfsCIDs,
-        string memory testname,
-        string memory ipfsid,
-        uint256 _fees,
-        uint256 _followUp,
-        uint256 _bloodPressure,
-        uint256 _weight
+        uint256 _id,
+        string memory _title,
+        uint256 _date,
+        string memory _filename,
+        string memory _file,
+        uint256 _created_at
     ) public {
-        Patient storage patient = patients[msg.sender];
-        Record memory record;
-        // TestReport memory testreport;
-        record.age = _age;
-        record.dateOfVisit = _dateOfVisit;
-        record.diagnosis = _diagnosis;
-        record.prescription = _prescription;
-        record.test.testName = testname;
-        record.test.ipfsCID = ipfsid;
-        // record.testsAdvised = _testsAdvised;
-        record.fees = _fees;
-        record.followUp = _followUp;
-        record.bloodPressure = _bloodPressure;
-        record.weight = _weight;
-
-        patient.records.push(record);
-
-        // TestReport[] storage testReports = patient.recordTestReports[patient.records.length - 1];
-        
-        // require(
-        //     _testNames.length == _ipfsCIDs.length,
-        //     "Length mismatch between test names and IPFS CIDs"
-        // );
-        
-        // for (uint256 i = 0; i < _testNames.length; i++) {
-        //     // TestReport memory testReport;
-        //     testReport.testName = _testNames[i];
-        //     testReport.ipfsCID = _ipfsCIDs[i];
-        //     testReports.push(testReport);
-        // }
+        // Patient storage patient = patients[msg.sender];
+    records.push(Record({
+            id: _id,
+            user_address: msg.sender,
+            title: _title,
+            date: _date,
+            filename: _filename,
+            file: _file,
+            created_at: _created_at
+    }));
     }
+    
+    
 }
